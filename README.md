@@ -1,0 +1,1 @@
+This project I'm practicing using only JavaScript to trigger audio and key events.

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!--The # asscoiated with data-key is the key code for the following letter thats wrapped in the <kbd></kbd> tag.-->
+    
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="75" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="76" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+<!--Sounds that are assicoated with each data-key#. Data attr-(key) -->
+    
+  <audio data-key="65" src="sounds/clap.wav"></audio>
+  <audio data-key="83" src="sounds/hihat.wav"></audio>
+  <audio data-key="68" src="sounds/kick.wav"></audio>
+  <audio data-key="70" src="sounds/openhat.wav"></audio>
+  <audio data-key="71" src="sounds/boom.wav"></audio>
+  <audio data-key="72" src="sounds/ride.wav"></audio>
+  <audio data-key="74" src="sounds/snare.wav"></audio>
+  <audio data-key="75" src="sounds/tom.wav"></audio>
+  <audio data-key="76" src="sounds/tink.wav"></audio>
+
+
+<script>
+    
+    //  Listening for a keydown event, then running the function
+    function playSound(e) {
+       const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);//Selecting a audio element, `audio[data-key](attr selector), "${e.keyCode}(esx template strings), const->The value of a constant cannot change through re-assignment, and it can't be redeclared"
+       const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+       if(!audio) return; // stop the fucntion from running all together
+       audio.currentTime = 0; //Rewind to the start each time you press a keyCode.
+       audio.play(); //Calling play on audio
+       key.classList.add('playing'); //Adds the animation to each keyCode.    
+    }
+    
+    //This is called against the key.addEventListener 
+    function removeTransition(e) {
+        if(e.propertyName !== 'transform') return; //skip it if it's not a transform
+        this.classList.remove('playing');
+    }
+    
+    
+    //Gives a array on everything that is matched.
+    const keys = document.querySelectorAll('.key');
+    //Listening for an Event called transitionend, (=>(es6))
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+    //If I ever want to based the sound off something else change the Event Listener 'keydown'. 
+     window.addEventListener('keydown', playSound);
+    
+</script>
+
+
+</body>
+</html>
